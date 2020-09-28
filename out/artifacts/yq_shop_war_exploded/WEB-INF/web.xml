@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+    <display-name>ssmtest</display-name>
+
+
+    <!-- 配置springmvc中filter 处理编码格式 -->
+    <filter>
+        <filter-name>characterEncoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!-- 配编码格式 -->
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncoding</filter-name>
+        <url-pattern>/*</url-pattern>
+
+    </filter-mapping>
+
+
+
+
+
+    <!-- tomcat启动后加载其他xml文件
+
+        applicationContext-dao.xml
+      applicationContext-service.xml
+      applicationContext-transaction.xml
+
+    -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext-*.xml</param-value>
+    </context-param>
+    <!-- 监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!--配置DisPatcherServlet 前端控制器  -->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!-- 加载springmvc.xml文件 -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springmvc.xml</param-value>
+
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/</url-pattern>
+
+    </servlet-mapping>
+
+
+    <!-- jsp的配置 -->
+    <jsp-config>
+        <jsp-property-group>
+            <!-- 配置拦截所有的jsp页面  -->
+            <url-pattern>*.jsp</url-pattern>
+            <!-- 可以使用el表达式  -->
+            <el-ignored>false</el-ignored>
+            <!-- 不能在页面使用java脚本 -->
+            <scripting-invalid>true</scripting-invalid>
+            <!-- 给所有的jsp页面导入要依赖的库，taglib.jsp就是一个全局的标签库文件  -->
+            <include-prelude>/WEB-INF/jsp/taglib.jsp</include-prelude>
+        </jsp-property-group>
+    </jsp-config>
+
+
+    <welcome-file-list>
+
+        <welcome-file>index.jsp</welcome-file>
+
+    </welcome-file-list>
+</web-app>

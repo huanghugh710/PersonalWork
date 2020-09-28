@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.heng.mapper.ArticleCarMapper" >
+  <resultMap id="BaseResultMap" type="com.heng.domain.ArticleCar" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ec_article_id" property="ecArticleId" jdbcType="INTEGER" />
+    <result column="ec_article_num" property="ecArticleNum" jdbcType="INTEGER" />
+    <result column="ec_user" property="ecUser" jdbcType="INTEGER" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, ec_article_id, ec_article_num, ec_user, CREATE_DATE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.heng.domain.ArticleCarExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ec_article_car
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ec_article_car
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ec_article_car
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.heng.domain.ArticleCarExample" >
+    delete from ec_article_car
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.heng.domain.ArticleCar" >
+    insert into ec_article_car (ID, ec_article_id, ec_article_num, 
+      ec_user, CREATE_DATE)
+    values (#{id,jdbcType=INTEGER}, #{ecArticleId,jdbcType=INTEGER}, #{ecArticleNum,jdbcType=INTEGER}, 
+      #{ecUser,jdbcType=INTEGER}, #{createDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.heng.domain.ArticleCar" >
+    insert into ec_article_car
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="ecArticleId != null" >
+        ec_article_id,
+      </if>
+      <if test="ecArticleNum != null" >
+        ec_article_num,
+      </if>
+      <if test="ecUser != null" >
+        ec_user,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ecArticleId != null" >
+        #{ecArticleId,jdbcType=INTEGER},
+      </if>
+      <if test="ecArticleNum != null" >
+        #{ecArticleNum,jdbcType=INTEGER},
+      </if>
+      <if test="ecUser != null" >
+        #{ecUser,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.heng.domain.ArticleCarExample" resultType="java.lang.Integer" >
+    select count(*) from ec_article_car
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ec_article_car
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.ecArticleId != null" >
+        ec_article_id = #{record.ecArticleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ecArticleNum != null" >
+        ec_article_num = #{record.ecArticleNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.ecUser != null" >
+        ec_user = #{record.ecUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        CREATE_DATE = #{record.createDate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ec_article_car
+    set ID = #{record.id,jdbcType=INTEGER},
+      ec_article_id = #{record.ecArticleId,jdbcType=INTEGER},
+      ec_article_num = #{record.ecArticleNum,jdbcType=INTEGER},
+      ec_user = #{record.ecUser,jdbcType=INTEGER},
+      CREATE_DATE = #{record.createDate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.heng.domain.ArticleCar" >
+    update ec_article_car
+    <set >
+      <if test="ecArticleId != null" >
+        ec_article_id = #{ecArticleId,jdbcType=INTEGER},
+      </if>
+      <if test="ecArticleNum != null" >
+        ec_article_num = #{ecArticleNum,jdbcType=INTEGER},
+      </if>
+      <if test="ecUser != null" >
+        ec_user = #{ecUser,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.heng.domain.ArticleCar" >
+    update ec_article_car
+    set ec_article_id = #{ecArticleId,jdbcType=INTEGER},
+      ec_article_num = #{ecArticleNum,jdbcType=INTEGER},
+      ec_user = #{ecUser,jdbcType=INTEGER},
+      CREATE_DATE = #{createDate,jdbcType=DATE}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

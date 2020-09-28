@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- 开启注解扫描 -->
+	<context:component-scan base-package="com.heng.controller"/>
+
+	<!--将配置好的自定义转换器挂载在这里  -->
+	<mvc:annotation-driven conversion-service="conversionService">
+		<!--在springmvc的注解配置中处理json格式,默认的编码格式是“ISO-8859-1”
+			如乱码,修改编码格式-->
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- 配置视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<!--配置自定义日期转换器 -->
+	<bean name="conversionService"
+		  class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="com.heng.utils.CustomConverter"></bean>
+			</set>
+		</property>
+	</bean>
+	
+	<!-- 配置SpringMVC文件上传 -->
+	<bean name="multipartResolver"
+		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	 <!-- 配置上传图片最大上限 10M  单位是 字节-->
+		<property name="maxUploadSize" value="10485760"></property>
+	</bean>
+
+	<!--&lt;!&ndash; 配置静态资源映射 &ndash;&gt;
+	&lt;!&ndash; 指定/WEB-INF/js  /WEB-INF/css/ 下的所有的静态资源包括子目录下的静态资源  都不被拦截 &ndash;&gt;
+	&lt;!&ndash; mapping = /js/**   表示访问静态资源的路劲的形式  可以访问/js/下的所有子目录下的资源 &ndash;&gt;
+	<mvc:resources location="/js/" mapping="/js/**"/>
+	<mvc:resources location="/css/" mapping="/css/**"/>
+	<mvc:resources location="/images/" mapping="/images/**"/>-->
+
+	<!-- 配置哪些资源不被拦截 -->
+	<mvc:default-servlet-handler />
+	<!-- <mvc:resources location="/images/" mapping="/images/**"></mvc:resources>
+	<mvc:resources location="/css/" mapping="/css/**"></mvc:resources>
+	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources> -->
+
+	<!-- 配置拦截器 -->
+	<mvc:interceptors>
+		<!--多个拦截器,顺序执行 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/*"/>
+			<bean class="com.heng.interceptor.LoginInterceptor"></bean>
+
+		</mvc:interceptor>
+
+	</mvc:interceptors>
+
+</beans>        
